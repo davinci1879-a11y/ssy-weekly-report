@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSY Projects Vector — Weekly Report</title>
+<style>
+  :root {
+    --navy:    #0A1F3C;
+    --navy2:   #112952;
+    --gold:    #C8973A;
+    --gold-lt: #E8B55A;
+    --cream:   #F5F2EC;
+    --white:   #FFFFFF;
+    --text:    #1A1A2E;
+    --muted:   #6B7280;
+    --border:  #D1C9B8;
+    --up:      #16A34A;
+    --down:    #DC2626;
+    --flat:    #6B7280;
+    --row-alt: #F8F6F2;
+    --shadow:  0 2px 12px rgba(10,31,60,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+
+  /* ── LOGIN ── */
+  #login-screen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: var(--navy);
+  }
+  .login-box {
+    background: var(--white); border-radius: 12px; padding: 48px 40px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.35); text-align: center; width: 340px;
+  }
+  .login-box .logo { font-size: 13px; letter-spacing: 4px; color: var(--navy2); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
+  .login-box h1 { font-size: 22px; color: var(--navy); margin-bottom: 4px; }
+  .login-box p { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+  .login-box input {
+    width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 6px;
+    font-size: 15px; margin-bottom: 16px; outline: none; transition: border 0.2s;
+  }
+  .login-box input:focus { border-color: var(--gold); }
+  .btn-primary {
+    width: 100%; padding: 11px; background: var(--navy); color: var(--white);
+    border: none; border-radius: 6px; font-size: 15px; font-weight: 600;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--navy2); }
+  #login-err { color: #DC2626; font-size: 13px; margin-top: 8px; display: none; }
+
+  /* ── APP SHELL ── */
+  #app { display: none; }
+
+  /* HEADER */
+  header {
+    background: var(--navy); padding: 0 32px;
+    display: flex; align-items: center; justify-content: space-between; height: 60px;
+    position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-logo { font-size: 11px; letter-spacing: 4px; color: var(--gold); font-weight: 700; text-transform: uppercase; }
+  .header-title { font-size: 15px; color: var(--white); font-weight: 500; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .week-badge {
+    background: var(--gold); color: var(--navy); font-size: 12px; font-weight: 700;
+    padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px;
+  }
+  #logout-btn {
+    background: transparent; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.7);
+    padding: 5px 12px; border-radius: 5px; font-size: 12px; cursor: pointer; transition: all 0.2s;
+  }
+  #logout-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* NAV TABS */
+  nav {
+    background: var(--white); border-bottom: 2px solid var(--border);
+    padding: 0 32px; display: flex; gap: 2px; overflow-x: auto;
+  }
+  .tab-btn {
+    padding: 12px 18px; font-size: 13px; font-weight: 600; color: var(--muted);
+    border: none; background: none; cursor: pointer; white-space: nowrap;
+    border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .tab-btn:hover { color: var(--navy); }
+  .tab-btn.active { color: var(--navy); border-bottom-color: var(--gold); }
+
+  /* MAIN CONTENT */
+  main { padding: 28px 32px; max-width: 1280px; }
+
+  /* WEEK SELECTOR */
+  .week-bar {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 24px;
+    background: var(--white); border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 20px; box-shadow: var(--shadow);
+  }
+  .week-bar label { font-size: 13px; font-weight: 600; color: var(--navy); min-width: 80px; }
+  .week-bar select {
+    padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 5px;
+    font-size: 13px; color: var(--text); background: var(--white); cursor: pointer; outline: none;
+  }
+  .week-bar select:focus { border-color: var(--gold); }
+
+  /* SECTION HEADER */
+  .section-hd {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .section-hd h2 { font-size: 15px; font-weight: 700; color: var(--navy); letter-spacing: 0.4px; }
+  .section-hd .sub { font-size: 12px; color: var(--muted); }
+
+  /* CARD */
+  .card {
+    background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+    box-shadow: var(--shadow); margin-bottom: 24px; overflow: hidden;
+  }
+  .card-head {
+    background: var(--navy); padding: 10px 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-head h3 { font-size: 13px; font-weight: 700; color: var(--white); letter-spacing: 1px; text-transform: uppercase; }
+  .card-head .pill { background: var(--gold); color: var(--navy); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+
+  /* TABLE */
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    background: #EEF0F5; color: var(--navy2); font-weight: 700; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.6px; padding: 9px 12px;
+    border-bottom: 2px solid var(--border); text-align: right; white-space: nowrap;
+  }
+  th:first-child, th:nth-child(2) { text-align: left; }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: right; }
+  td:first-child, td:nth-child(2) { text-align: left; font-weight: 600; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) { background: var(--row-alt); }
+  tr:hover { background: #F0EDE5; }
+  .group-sep td { background: #E8EBF2 !important; font-weight: 700; color: var(--navy); padding: 5px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* ARROWS */
+  .arrow-up   { color: var(--up);   font-size: 14px; }
+  .arrow-down { color: var(--down); font-size: 14px; }
+  .arrow-flat { color: var(--flat); font-size: 14px; }
+
+  /* S&P TRANSACTIONS */
+  .sp-list { padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .sp-item { background: var(--row-alt); border: 1px solid var(--border); border-radius: 7px; padding: 10px 16px; }
+  .sp-item .sp-type { font-size: 10px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+  .sp-item .sp-vessel { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+  .sp-item .sp-detail { font-size: 12px; color: var(--muted); }
+
+  /* DISCLAIMER */
+  .disclaimer { font-size: 10.5px; color: var(--muted); padding: 10px 20px 14px; line-height: 1.6; border-top: 1px solid var(--border); }
+
+  /* GRID 2 COL */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 900px) { .grid2 { grid-template-columns: 1fr; } }
+
+  /* ADMIN TAB */
+  .form-section { padding: 20px; }
+  .form-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; align-items: flex-end; }
+  .form-row label { font-size: 12px; font-weight: 600; color: var(--navy); display: block; margin-bottom: 4px; }
+  .form-row input, .form-row select, .form-row textarea {
+    padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 5px;
+    font-size: 13px; min-width: 120px; outline: none;
+  }
+  .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--gold); }
+  .btn-save {
+    padding: 8px 20px; background: var(--navy); color: var(--white); border: none;
+    border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s;
+  }
+  .btn-save:hover { background: var(--navy2); }
+  .btn-save:disabled { background: #aaa; cursor: not-allowed; }
+  .save-msg { font-size: 12px; color: var(--up); margin-left: 10px; display: none; }
+  .save-err { font-size: 12px; color: var(--down); margin-left: 10px; display: none; }
+
+  .loader {
+    display: none; text-align: center; padding: 40px;
+    font-size: 13px; color: var(--muted);
+  }
+
+  .no-data { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo">SSY Group</div>
+    <h1>Projects Vector</h1>
+    <p>Weekly Market Report</p>
+    <input type="password" id="pw-input" placeholder="Password" autocomplete="current-password">
+    <button class="btn-primary" onclick="doLogin()">Sign In</button>
+    <div id="login-err">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="app">
+  <header>
+    <div class="header-left">
+      <span class="header-logo">SSY Projects &amp; Newbuilds</span>
+      <span style="color:rgba(255,255,255,0.3)">|</span>
+      <span class="header-title">Weekly Market Report</span>
+    </div>
+    <div class="header-right">
+      <span class="week-badge" id="header-date">—</span>
+      <button id="logout-btn" onclick="doLogout()">Sign Out</button>
+    </div>
+  </header>
+
+  <nav>
+    <button class="tab-btn active" onclick="showTab('view',this)">📊 Weekly Report</button>
+    <button class="tab-btn" onclick="showTab('admin',this)">✏️ Data Entry</button>
+    <button class="tab-btn" onclick="showTab('archive',this)">📁 Archive</button>
+  </nav>
+
+  <main>
+    <!-- ── LOADER ── -->
+    <div class="loader" id="loader">Loading data…</div>
+
+    <!-- ══ VIEW TAB ══ -->
+    <div id="tab-view">
+      <div class="week-bar">
+        <label>Week of</label>
+        <select id="week-select" onchange="loadWeek(this.value)"></select>
+        <span id="view-status" style="font-size:12px;color:var(--muted)"></span>
+      </div>
+
+      <!-- FFA CURVES -->
+      <div class="card">
+        <div class="card-head"><h3>Dry FFA Curves</h3><span class="pill">USD/Day</span></div>
+        <div class="tbl-wrap">
+          <table id="tbl-ffa">
+            <thead><tr>
+              <th>Period</th>
+              <th>HANDY<br><small>BHSI 38 7TC</small></th><th></th>
+              <th>SMX<br><small>BSI 58 10TC</small></th><th></th>
+              <th>PMX<br><small>BPI 82 5TC</small></th><th></th>
+              <th>CAPE<br><small>BCI 180 5TC</small></th><th></th>
+            </tr></thead>
+            <tbody id="body-ffa"><tr><td colspan="9" class="no-data">Select a week above</td></tr></tbody>
+          </table>
+        </div>
+        <div class="disclaimer">* FFA pricing is provided by SSY Futures Ltd. SSY Futures Ltd is authorised and regulated by the UK FCA. For information purposes only.</div>
+      </div>
+
+      <!-- PERIOD RATES -->
+      <div class="card">
+        <div class="card-head"><h3>Period &amp; Project Rates</h3><span class="pill">USD/Day</span></div>
+        <div class="tbl-wrap">
+          <table id="tbl-period">
+            <thead><tr>
+              <th>Vessel</th><th>Duration</th>
+              <th>Jun '26<br><small>Gross, Eco</small></th><th></th>
+              <th>2H 2027<br><small>Net, NB</small></th><th></th>
+              <th>2H 2028<br><small>Net, NB</small></th><th></th>
+              <th>2H 2029<br><small>Net, NB</small></th><th></th>
+            </tr></thead>
+            <tbody id="body-period"><tr><td colspan="10" class="no-data">Select a week above</td></tr></tbody>
+          </table>
+        </div>
+        <div class="disclaimer">* 1–2 year rates quoted gross basis 3.75% address commission. 3/5/7 year rates quoted net of address commission. Based on ECO Japanese-built vessels (non-scrubber fitted) with prompt delivery within the Pacific.</div>
+      </div>
+
+      <!-- S&P + NB GRID -->
+      <div class="grid2">
+        <!-- S&P -->
+        <div class="card">
+          <div class="card-head"><h3>S&amp;P &amp; Newbuilding Prices</h3><span class="pill">USD million</span></div>
+          <div class="tbl-wrap">
+            <table id="tbl-sp">
+              <thead><tr><th>Type</th><th>Newbuild</th><th></th><th>Resale</th><th></th><th>5 YO</th><th></th><th>10 YO</th><th></th></tr></thead>
+              <tbody id="body-sp"><tr><td colspan="9" class="no-data">Select a week above</td></tr></tbody>
+            </table>
+          </div>
+          <div class="disclaimer">* S&P and Newbuilding pricing based on non-scrubber fitted Japanese built vessels.</div>
+        </div>
+
+        <!-- DEMOLITION -->
+        <div class="card">
+          <div class="card-head"><h3>Demolition Market</h3><span class="pill">USD/LDT</span></div>
+          <div class="tbl-wrap">
+            <table id="tbl-demo">
+              <thead><tr><th>Country</th><th>Drybulk</th><th></th><th>Tanker</th><th></th><th>Container</th><th></th></tr></thead>
+              <tbody id="body-demo"><tr><td colspan="7" class="no-data">Select a week above</td></tr></tbody>
+            </table>
+          </div>
+          <div class="disclaimer">* Demolition prices are estimated as per day of publication.</div>
+        </div>
+      </div>
+
+      <!-- NEWBUILDINGS -->
+      <div class="card">
+        <div class="card-head"><h3>Newbuilding Prices</h3><span class="pill">USD million</span></div>
+        <div class="tbl-wrap">
+          <table id="tbl-nb">
+            <thead><tr>
+              <th>Type</th><th>DWT/CBM/TEU</th>
+              <th>China</th><th></th>
+              <th>Korea</th><th></th>
+              <th>Japan</th><th></th>
+              <th>Delivery</th>
+            </tr></thead>
+            <tbody id="body-nb"><tr><td colspan="9" class="no-data">Select a week above</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TANKER RATES -->
+      <div class="card">
+        <div class="card-head"><h3>Tanker Period Rates</h3><span class="pill">USD/Day</span></div>
+        <div class="tbl-wrap">
+          <table id="tbl-tanker">
+            <thead><tr>
+              <th>Type</th>
+              <th>1Y Eco Scrubber</th><th>1Y Eco</th><th>1Y Non-Eco</th><th></th>
+              <th>3Y Eco Scrubber</th><th>3Y Eco</th><th>3Y Non-Eco</th><th></th>
+            </tr></thead>
+            <tbody id="body-tanker"><tr><td colspan="9" class="no-data">Select a week above</td></tr></tbody>
+          </table>
+        </div>
+        <div class="disclaimer">* All prices USD/Day. Rate assessments for evaluation purposes only.</div>
+      </div>
+
+      <!-- BALTIC INDEX -->
+      <div class="card">
+        <div class="card-head"><h3>Baltic Freight Average</h3><span class="pill">USD/Day</span></div>
+        <div class="tbl-wrap">
+          <table id="tbl-baltic">
+            <thead><tr><th>Date</th><th>BHSI 38</th><th></th><th>BSI 63</th><th></th><th>BPI 82</th><th></th><th>BCI 182</th><th></th></tr></thead>
+            <tbody id="body-baltic"><tr><td colspan="9" class="no-data">Select a week above</td></tr></tbody>
+          </table>
+        </div>
+        <div class="disclaimer">* Based on levels published by the Baltic Exchange on the day before publication.</div>
+      </div>
+
+      <!-- S&P TRANSACTIONS -->
+      <div class="card">
+        <div class="card-head"><h3>S&amp;P Transactions</h3></div>
+        <div class="sp-list" id="list-sp-trans">
+          <div class="no-data">Select a week above</div>
+        </div>
+      </div>
+    </div><!-- /tab-view -->
+
+    <!-- ══ ADMIN TAB ══ -->
+    <div id="tab-admin" style="display:none">
+      <div class="card">
+        <div class="card-head"><h3>Add / Update Weekly Data</h3></div>
+        <div class="form-section">
+          <div class="form-row">
+            <div><label>Week Date</label><input type="date" id="f-date"></div>
+          </div>
+
+          <div class="card-head" style="margin:-0px;border-radius:0"><h3 style="font-size:11px">FFA Curves (USD/Day)</h3></div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;font-size:12px;margin-bottom:16px">
+              <thead><tr style="background:#EEF0F5">
+                <th style="text-align:left;padding:6px 8px">Period</th>
+                <th style="padding:6px 8px">HANDY</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">SMX</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">PMX</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">CAPE</th><th style="padding:6px 8px">▲</th>
+              </tr></thead>
+              <tbody id="ffa-input-rows"></tbody>
+            </table>
+          </div>
+
+          <div class="card-head" style="border-radius:0"><h3 style="font-size:11px">Period Rates (USD/Day)</h3></div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;font-size:12px;margin-bottom:16px">
+              <thead><tr style="background:#EEF0F5">
+                <th style="text-align:left;padding:6px 8px">Vessel</th>
+                <th style="padding:6px 8px">Duration</th>
+                <th style="padding:6px 8px">Jun26</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">2H2027</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">2H2028</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">2H2029</th><th style="padding:6px 8px">▲</th>
+              </tr></thead>
+              <tbody id="period-input-rows"></tbody>
+            </table>
+          </div>
+
+          <div class="card-head" style="border-radius:0"><h3 style="font-size:11px">S&amp;P Pricing (USD million)</h3></div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;font-size:12px;margin-bottom:16px">
+              <thead><tr style="background:#EEF0F5">
+                <th style="text-align:left;padding:6px 8px">Type</th>
+                <th style="padding:6px 8px">Newbuild</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">Resale</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">5 YO</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">10 YO</th><th style="padding:6px 8px">▲</th>
+              </tr></thead>
+              <tbody id="sp-input-rows"></tbody>
+            </table>
+          </div>
+
+          <div class="card-head" style="border-radius:0"><h3 style="font-size:11px">Demolition Pricing (USD/LDT)</h3></div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;font-size:12px;margin-bottom:16px">
+              <thead><tr style="background:#EEF0F5">
+                <th style="text-align:left;padding:6px 8px">Country</th>
+                <th style="padding:6px 8px">Drybulk</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">Tanker</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">Container</th><th style="padding:6px 8px">▲</th>
+              </tr></thead>
+              <tbody id="demo-input-rows"></tbody>
+            </table>
+          </div>
+
+          <div class="card-head" style="border-radius:0"><h3 style="font-size:11px">Baltic Index</h3></div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;font-size:12px;margin-bottom:16px">
+              <thead><tr style="background:#EEF0F5">
+                <th style="text-align:left;padding:6px 8px">Index</th>
+                <th style="padding:6px 8px">Value</th><th style="padding:6px 8px">▲</th>
+              </tr></thead>
+              <tbody id="baltic-input-rows"></tbody>
+            </table>
+          </div>
+
+          <div class="card-head" style="border-radius:0"><h3 style="font-size:11px">S&amp;P Transactions (one per line: TYPE | Vessel Name | Details)</h3></div>
+          <div class="form-row" style="padding-top:10px">
+            <div style="flex:1">
+              <textarea id="f-sp-trans" rows="6" style="width:100%;font-size:12px" placeholder="Handy | VESSEL NAME (38k dwt 2010 Builder) | Sold at USD 10.0 mill
+Supra/Ultra | VESSEL NAME (58k dwt 2013 DACKS) | Committed at high USD 19 mill"></textarea>
+            </div>
+          </div>
+
+          <div class="card-head" style="border-radius:0;margin-top:8px"><h3 style="font-size:11px">Newbuilding Prices (USD million)</h3></div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;font-size:12px;margin-bottom:16px">
+              <thead><tr style="background:#EEF0F5">
+                <th style="text-align:left;padding:6px 8px">Type</th>
+                <th style="padding:6px 8px">DWT/CBM/TEU</th>
+                <th style="padding:6px 8px">China</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">Korea</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">Japan</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">Delivery</th>
+              </tr></thead>
+              <tbody id="nb-input-rows"></tbody>
+            </table>
+          </div>
+
+          <div class="card-head" style="border-radius:0"><h3 style="font-size:11px">Tanker Period Rates (USD/Day)</h3></div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;font-size:12px;margin-bottom:16px">
+              <thead><tr style="background:#EEF0F5">
+                <th style="text-align:left;padding:6px 8px">Type</th>
+                <th style="padding:6px 8px">1Y EcoScr</th><th style="padding:6px 8px">1Y Eco</th><th style="padding:6px 8px">1Y NonEco</th><th style="padding:6px 8px">▲</th>
+                <th style="padding:6px 8px">3Y EcoScr</th><th style="padding:6px 8px">3Y Eco</th><th style="padding:6px 8px">3Y NonEco</th><th style="padding:6px 8px">▲</th>
+              </tr></thead>
+              <tbody id="tanker-input-rows"></tbody>
+            </table>
+          </div>
+
+          <div style="display:flex;align-items:center;padding-top:8px">
+            <button class="btn-save" id="btn-submit" onclick="submitWeek()">Save Week to Spreadsheet</button>
+            <span class="save-msg" id="save-msg">✓ Saved successfully!</span>
+            <span class="save-err" id="save-err">✗ Save failed. Check API URL.</span>
+          </div>
+        </div>
+      </div>
+    </div><!-- /tab-admin -->
+
+    <!-- ══ ARCHIVE TAB ══ -->
+    <div id="tab-archive" style="display:none">
+      <div class="card">
+        <div class="card-head"><h3>All Stored Weeks</h3></div>
+        <div id="archive-list" style="padding:16px 20px">
+          <div class="no-data">Loading…</div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div><!-- /app -->
+
+<script>
+// ══════════════════════════════════════════════
+//  CONFIG — paste your Apps Script Web App URL here
+// ══════════════════════════════════════════════
+const API_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const REPORT_PASSWORD = 'ssy2026'; // change as needed
+
+let PW = '';
+let allWeeks = {};
+
+// ── Auth ──
+function doLogin() {
+  const v = document.getElementById('pw-input').value;
+  if (v === REPORT_PASSWORD) {
+    PW = v;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initApp();
+  } else {
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+function doLogout() {
+  PW = '';
+  location.reload();
+}
+
+// ── Tabs ──
+function showTab(name, btn) {
+  ['view','admin','archive'].forEach(t => document.getElementById('tab-'+t).style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+name).style.display = 'block';
+  btn.classList.add('active');
+  if (name === 'archive') renderArchive();
+}
+
+// ── Init ──
+async function initApp() {
+  buildInputTables();
+  await fetchAllWeeks();
+  populateWeekSelect();
+  const weeks = Object.keys(allWeeks).sort().reverse();
+  if (weeks.length) loadWeek(weeks[0]);
+}
+
+// ── Fetch all data ──
+async function fetchAllWeeks() {
+  document.getElementById('loader').style.display = 'block';
+  try {
+    const r = await fetch(API_URL + '?password=' + encodeURIComponent(PW));
+    const j = await r.json();
+    if (j.entries) {
+      allWeeks = {};
+      j.entries.forEach(e => { allWeeks[e.week_date] = e; });
+    }
+  } catch(ex) {
+    console.warn('API not connected:', ex);
+  }
+  document.getElementById('loader').style.display = 'none';
+}
+
+function populateWeekSelect() {
+  const sel = document.getElementById('week-select');
+  sel.innerHTML = '';
+  const weeks = Object.keys(allWeeks).sort().reverse();
+  if (!weeks.length) {
+    sel.innerHTML = '<option>No data yet</option>';
+    return;
+  }
+  weeks.forEach(w => {
+    const o = document.createElement('option');
+    o.value = w; o.text = formatDate(w);
+    sel.appendChild(o);
+  });
+}
+
+function formatDate(d) {
+  if (!d) return '';
+  const dt = new Date(d);
+  return dt.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function arrowHtml(dir) {
+  if (!dir || dir === '=' || dir === 'è') return `<span class="arrow-flat">→</span>`;
+  if (['é','🡽','▲','^','up'].includes(dir)) return `<span class="arrow-up">↑</span>`;
+  if (['ê','▼','v','down','🢆'].includes(dir)) return `<span class="arrow-down">↓</span>`;
+  return `<span class="arrow-flat">→</span>`;
+}
+
+function numFmt(v, dec=0) {
+  if (v === null || v === undefined || v === '' || v === 'N/A') return '—';
+  const n = parseFloat(v);
+  if (isNaN(n)) return v;
+  return n.toLocaleString('en-US', {minimumFractionDigits: dec, maximumFractionDigits: dec});
+}
+
+// ── Load Week ──
+function loadWeek(wk) {
+  if (!wk || !allWeeks[wk]) return;
+  document.getElementById('header-date').textContent = formatDate(wk);
+  const d = allWeeks[wk];
+  renderFFA(d.ffa || []);
+  renderPeriod(d.period || []);
+  renderSP(d.sp || []);
+  renderDemo(d.demo || []);
+  renderBaltic(d.baltic || []);
+  renderNB(d.nb || []);
+  renderTanker(d.tanker || []);
+  renderSPTrans(d.sp_trans || []);
+}
+
+function renderFFA(rows) {
+  const FFA_PERIODS = ['Jun 26','Jul 26','Aug 26','Sep 27','Q3\' 26','Q4\' 26','Cal 27.','Cal 28','Cal 29','Cal 30.'];
+  const tb = document.getElementById('body-ffa');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="9" class="no-data">No data</td></tr>'; return; }
+  tb.innerHTML = rows.map(r => `<tr>
+    <td>${r.period||''}</td>
+    <td>${numFmt(r.handy)}</td><td>${arrowHtml(r.handy_dir)}</td>
+    <td>${numFmt(r.smx)}</td><td>${arrowHtml(r.smx_dir)}</td>
+    <td>${numFmt(r.pmx)}</td><td>${arrowHtml(r.pmx_dir)}</td>
+    <td>${numFmt(r.cape)}</td><td>${arrowHtml(r.cape_dir)}</td>
+  </tr>`).join('');
+}
+
+function renderPeriod(rows) {
+  const tb = document.getElementById('body-period');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="10" class="no-data">No data</td></tr>'; return; }
+  let html = '';
+  let lastVessel = '';
+  rows.forEach(r => {
+    if (r.vessel !== lastVessel) {
+      html += `<tr class="group-sep"><td colspan="10">${r.vessel}</td></tr>`;
+      lastVessel = r.vessel;
+    }
+    html += `<tr>
+      <td></td><td>${r.duration||''}</td>
+      <td>${numFmt(r.jun26)}</td><td>${arrowHtml(r.jun26_dir)}</td>
+      <td>${numFmt(r.y27)}</td><td>${arrowHtml(r.y27_dir)}</td>
+      <td>${numFmt(r.y28)}</td><td>${arrowHtml(r.y28_dir)}</td>
+      <td>${numFmt(r.y29)}</td><td>${arrowHtml(r.y29_dir)}</td>
+    </tr>`;
+  });
+  tb.innerHTML = html;
+}
+
+function renderSP(rows) {
+  const tb = document.getElementById('body-sp');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="9" class="no-data">No data</td></tr>'; return; }
+  tb.innerHTML = rows.map(r => `<tr>
+    <td>${r.type||''}</td>
+    <td>${numFmt(r.newbuild,2)}</td><td>${arrowHtml(r.nb_dir)}</td>
+    <td>${numFmt(r.resale,2)}</td><td>${arrowHtml(r.rs_dir)}</td>
+    <td>${numFmt(r.fiveyo,2)}</td><td>${arrowHtml(r.fiveyo_dir)}</td>
+    <td>${numFmt(r.tenyo,2)}</td><td>${arrowHtml(r.tenyo_dir)}</td>
+  </tr>`).join('');
+}
+
+function renderDemo(rows) {
+  const tb = document.getElementById('body-demo');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="7" class="no-data">No data</td></tr>'; return; }
+  tb.innerHTML = rows.map(r => `<tr>
+    <td>${r.country||''}</td>
+    <td>${numFmt(r.dry)}</td><td>${arrowHtml(r.dry_dir)}</td>
+    <td>${numFmt(r.tanker)}</td><td>${arrowHtml(r.tanker_dir)}</td>
+    <td>${numFmt(r.container)}</td><td>${arrowHtml(r.cont_dir)}</td>
+  </tr>`).join('');
+}
+
+function renderBaltic(rows) {
+  const tb = document.getElementById('body-baltic');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="9" class="no-data">No data</td></tr>'; return; }
+  tb.innerHTML = rows.map(r => `<tr>
+    <td>${r.date||''}</td>
+    <td>${numFmt(r.bhsi38)}</td><td>${arrowHtml(r.bhsi38_dir)}</td>
+    <td>${numFmt(r.bsi63)}</td><td>${arrowHtml(r.bsi63_dir)}</td>
+    <td>${numFmt(r.bpi82)}</td><td>${arrowHtml(r.bpi82_dir)}</td>
+    <td>${numFmt(r.bci182)}</td><td>${arrowHtml(r.bci182_dir)}</td>
+  </tr>`).join('');
+}
+
+function renderNB(rows) {
+  const tb = document.getElementById('body-nb');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="9" class="no-data">No data</td></tr>'; return; }
+  tb.innerHTML = rows.map(r => `<tr>
+    <td>${r.type||''}</td><td>${r.size||''}</td>
+    <td>${r.china||'—'}</td><td>${arrowHtml(r.china_dir)}</td>
+    <td>${r.korea||'—'}</td><td>${arrowHtml(r.korea_dir)}</td>
+    <td>${r.japan||'—'}</td><td>${arrowHtml(r.japan_dir)}</td>
+    <td>${r.delivery||''}</td>
+  </tr>`).join('');
+}
+
+function renderTanker(rows) {
+  const tb = document.getElementById('body-tanker');
+  if (!rows.length) { tb.innerHTML = '<tr><td colspan="9" class="no-data">No data</td></tr>'; return; }
+  let html = '';
+  let lastCat = '';
+  rows.forEach(r => {
+    if (r.category !== lastCat) {
+      html += `<tr class="group-sep"><td colspan="9">${r.category}</td></tr>`;
+      lastCat = r.category;
+    }
+    html += `<tr>
+      <td>${r.type||''}</td>
+      <td>${numFmt(r.y1_ecoscrub)}</td><td>${numFmt(r.y1_eco)}</td><td>${numFmt(r.y1_noneco)}</td><td>${arrowHtml(r.y1_dir)}</td>
+      <td>${numFmt(r.y3_ecoscrub)}</td><td>${numFmt(r.y3_eco)}</td><td>${numFmt(r.y3_noneco)}</td><td>${arrowHtml(r.y3_dir)}</td>
+    </tr>`;
+  });
+  tb.innerHTML = html;
+}
+
+function renderSPTrans(items) {
+  const el = document.getElementById('list-sp-trans');
+  if (!items.length) { el.innerHTML = '<div class="no-data">No transactions this week</div>'; return; }
+  el.innerHTML = items.map(t => `
+    <div class="sp-item">
+      <div class="sp-type">${t.type||''}</div>
+      <div class="sp-vessel">${t.vessel||''}</div>
+      <div class="sp-detail">${t.detail||''}</div>
+    </div>`).join('');
+}
+
+// ── Archive ──
+function renderArchive() {
+  const el = document.getElementById('archive-list');
+  const weeks = Object.keys(allWeeks).sort().reverse();
+  if (!weeks.length) { el.innerHTML = '<div class="no-data">No data stored yet.</div>'; return; }
+  el.innerHTML = weeks.map(w => `
+    <div style="display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:12px">
+      <div style="min-width:130px;font-weight:700;color:var(--navy)">${formatDate(w)}</div>
+      <button class="btn-save" style="padding:5px 14px;font-size:12px" onclick="loadWeekAndView('${w}')">View Report</button>
+    </div>`).join('');
+}
+
+function loadWeekAndView(wk) {
+  document.getElementById('week-select').value = wk;
+  loadWeek(wk);
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn')[0].classList.add('active');
+  ['view','admin','archive'].forEach(t => document.getElementById('tab-'+t).style.display = 'none');
+  document.getElementById('tab-view').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+// ══════════════════════════════════════════════
+//  INPUT TABLE BUILDERS
+// ══════════════════════════════════════════════
+const FFA_PERIODS = ['Jun 26','Jul 26','Aug 26','Sep 27',"Q3' 26","Q4' 26","Cal 27.","Cal 28","Cal 29","Cal 30."];
+const PERIOD_VESSELS = [
+  {v:'HDY: 38-40K DWT', durations:['1 Year','2 Year','3 Year','5 Year','7 Year']},
+  {v:'UMX: 61-64K DWT', durations:['1 Year','2 Year','3 Year','5 Year','7 Year']},
+  {v:'KMX: 81-82K DWT', durations:['1 Year','2 Year','3 Year','5 Year','7 Year']},
+  {v:'CAPE: 180-182K DWT', durations:['1 Year','2 Year','3 Year','5 Year','7 Year']},
+  {v:'NCM: 208-210K DWT', durations:['1 Year','2 Year','3 Year','5 Year','7 Year']},
+];
+const SP_TYPES = ['HDY 38','UMX 64','KMX 82','CAPE 180'];
+const DEMO_COUNTRIES = ['Bangladesh','Pakistan','India','Turkey'];
+const BALTIC_INDICES = ['BHSI 38','BSI 63','BPI 82','BCI 182'];
+const NB_TYPES = [
+  {t:'Newcastlemax', s:'208K DWT'},{t:'Capesize', s:'182K DWT'},{t:'Kamsarmax', s:'82K DWT'},
+  {t:'Ultramax', s:'64K DWT'},{t:'Handysize', s:'38K DWT'},{t:'VLCC', s:'300K DWT'},
+  {t:'Suezmax', s:'158K DWT'},{t:'Aframax', s:'114K DWT'},{t:'LRII', s:'114K DWT'},
+  {t:'MR', s:'50K DWT'},{t:'LNGC', s:'174K CBM'},{t:'VLGC DF', s:'93K CBM'},
+  {t:'Ultra Large DF', s:'16,000 TEU'},{t:'Post-Panamax DF', s:'8,000 TEU'},
+];
+const TANKER_TYPES = [
+  {c:'Crude', t:'VLCC'},{c:'Crude', t:'Suezmax'},{c:'Crude', t:'Aframax'},
+  {c:'Products', t:'LR2'},{c:'Products', t:'LR1'},{c:'Products', t:'MR'},{c:'Products', t:'Handy'},
+];
+
+const DIR_OPTIONS = `<option value="è">→ Flat</option><option value="é">↑ Up</option><option value="ê">↓ Down</option>`;
+function inp(id, cls='', placeholder='') { return `<input type="text" id="${id}" class="${cls}" placeholder="${placeholder}" style="width:90px;padding:4px 6px;border:1px solid #ccc;border-radius:4px;font-size:12px">`; }
+function dir(id) { return `<select id="${id}" style="padding:4px 4px;border:1px solid #ccc;border-radius:4px;font-size:12px">${DIR_OPTIONS}</select>`; }
+
+function buildInputTables() {
+  // FFA
+  document.getElementById('ffa-input-rows').innerHTML = FFA_PERIODS.map(p => `<tr>
+    <td style="padding:4px 8px;font-weight:600">${p}</td>
+    <td style="padding:2px 4px">${inp('ffa_handy_'+p.replace(/[' .]/g,'_'))}</td><td>${dir('ffa_handy_dir_'+p.replace(/[' .]/g,'_'))}</td>
+    <td style="padding:2px 4px">${inp('ffa_smx_'+p.replace(/[' .]/g,'_'))}</td><td>${dir('ffa_smx_dir_'+p.replace(/[' .]/g,'_'))}</td>
+    <td style="padding:2px 4px">${inp('ffa_pmx_'+p.replace(/[' .]/g,'_'))}</td><td>${dir('ffa_pmx_dir_'+p.replace(/[' .]/g,'_'))}</td>
+    <td style="padding:2px 4px">${inp('ffa_cape_'+p.replace(/[' .]/g,'_'))}</td><td>${dir('ffa_cape_dir_'+p.replace(/[' .]/g,'_'))}</td>
+  </tr>`).join('');
+
+  // Period
+  let prHTML = '';
+  PERIOD_VESSELS.forEach(pv => {
+    pv.durations.forEach((d,i) => {
+      prHTML += `<tr>
+        <td style="padding:4px 8px;font-size:11px;color:var(--navy)">${i===0?pv.v:''}</td>
+        <td style="padding:2px 4px">${d}</td>
+        <td>${inp('pr_'+pv.v.replace(/[: \/\-]/g,'_')+'_'+d.replace(/ /g,'_')+'_jun26')}</td>
+        <td>${dir('pr_'+pv.v.replace(/[: \/\-]/g,'_')+'_'+d.replace(/ /g,'_')+'_jun26_dir')}</td>
+        <td>${inp('pr_'+pv.v.replace(/[: \/\-]/g,'_')+'_'+d.replace(/ /g,'_')+'_y27')}</td>
+        <td>${dir('pr_'+pv.v.replace(/[: \/\-]/g,'_')+'_'+d.replace(/ /g,'_')+'_y27_dir')}</td>
+        <td>${inp('pr_'+pv.v.replace(/[: \/\-]/g,'_')+'_'+d.replace(/ /g,'_')+'_y28')}</td>
+        <td>${dir('pr_'+pv.v.replace(/[: \/\-]/g,'_')+'_'+d.replace(/ /g,'_')+'_y28_dir')}</td>
+        <td>${inp('pr_'+pv.v.replace(/[: \/\-]/g,'_')+'_'+d.replace(/ /g,'_')+'_y29')}</td>
+        <td>${dir('pr_'+pv.v.replace(/[: \/\-]/g,'_')+'_'+d.replace(/ /g,'_')+'_y29_dir')}</td>
+      </tr>`;
+    });
+  });
+  document.getElementById('period-input-rows').innerHTML = prHTML;
+
+  // S&P
+  document.getElementById('sp-input-rows').innerHTML = SP_TYPES.map(t => {
+    const k = t.replace(/ /g,'_');
+    return `<tr>
+      <td style="padding:4px 8px;font-weight:600">${t}</td>
+      <td>${inp('sp_nb_'+k,'','e.g. 34.50')}</td><td>${dir('sp_nb_dir_'+k)}</td>
+      <td>${inp('sp_rs_'+k,'','e.g. 36.50')}</td><td>${dir('sp_rs_dir_'+k)}</td>
+      <td>${inp('sp_5y_'+k,'','e.g. 30.00')}</td><td>${dir('sp_5y_dir_'+k)}</td>
+      <td>${inp('sp_10y_'+k,'','e.g. 22.25')}</td><td>${dir('sp_10y_dir_'+k)}</td>
+    </tr>`;
+  }).join('');
+
+  // Demo
+  document.getElementById('demo-input-rows').innerHTML = DEMO_COUNTRIES.map(c => {
+    const k = c.replace(/ /g,'_');
+    return `<tr>
+      <td style="padding:4px 8px;font-weight:600">${c}</td>
+      <td>${inp('demo_dry_'+k)}</td><td>${dir('demo_dry_dir_'+k)}</td>
+      <td>${inp('demo_tnk_'+k)}</td><td>${dir('demo_tnk_dir_'+k)}</td>
+      <td>${inp('demo_con_'+k)}</td><td>${dir('demo_con_dir_'+k)}</td>
+    </tr>`;
+  }).join('');
+
+  // Baltic
+  document.getElementById('baltic-input-rows').innerHTML = BALTIC_INDICES.map(idx => {
+    const k = idx.replace(/ /g,'_');
+    return `<tr>
+      <td style="padding:4px 8px;font-weight:600">${idx}</td>
+      <td>${inp('bal_'+k)}</td><td>${dir('bal_dir_'+k)}</td>
+    </tr>`;
+  }).join('');
+
+  // NB
+  document.getElementById('nb-input-rows').innerHTML = NB_TYPES.map(nb => {
+    const k = nb.t.replace(/[ \-]/g,'_');
+    return `<tr>
+      <td style="padding:4px 8px;font-weight:600">${nb.t}</td>
+      <td style="padding:4px 8px;color:var(--muted);font-size:11px">${nb.s}</td>
+      <td>${inp('nb_cn_'+k,'','e.g. 75-77')}</td><td>${dir('nb_cn_dir_'+k)}</td>
+      <td>${inp('nb_kr_'+k,'','—')}</td><td>${dir('nb_kr_dir_'+k)}</td>
+      <td>${inp('nb_jp_'+k,'','e.g. 84-86')}</td><td>${dir('nb_jp_dir_'+k)}</td>
+      <td>${inp('nb_del_'+k,'','e.g. 1H 2030')}</td>
+    </tr>`;
+  }).join('');
+
+  // Tanker
+  document.getElementById('tanker-input-rows').innerHTML = TANKER_TYPES.map(tt => {
+    const k = (tt.c+'_'+tt.t).replace(/ /g,'_');
+    return `<tr>
+      <td style="padding:4px 8px;font-weight:600">${tt.c} — ${tt.t}</td>
+      <td>${inp('tnk_y1scr_'+k)}</td><td>${inp('tnk_y1eco_'+k)}</td><td>${inp('tnk_y1ne_'+k)}</td><td>${dir('tnk_y1_dir_'+k)}</td>
+      <td>${inp('tnk_y3scr_'+k)}</td><td>${inp('tnk_y3eco_'+k)}</td><td>${inp('tnk_y3ne_'+k)}</td><td>${dir('tnk_y3_dir_'+k)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════
+//  COLLECT FORM DATA & SUBMIT
+// ══════════════════════════════════════════════
+function gv(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function collectFormData() {
+  const week_date = gv('f-date');
+  if (!week_date) { alert('Please select a week date.'); return null; }
+
+  // FFA
+  const ffa = FFA_PERIODS.map(p => {
+    const k = p.replace(/[' .]/g,'_');
+    return { period:p, handy:gv('ffa_handy_'+k), handy_dir:gv('ffa_handy_dir_'+k),
+      smx:gv('ffa_smx_'+k), smx_dir:gv('ffa_smx_dir_'+k),
+      pmx:gv('ffa_pmx_'+k), pmx_dir:gv('ffa_pmx_dir_'+k),
+      cape:gv('ffa_cape_'+k), cape_dir:gv('ffa_cape_dir_'+k) };
+  }).filter(r => r.handy || r.smx || r.pmx || r.cape);
+
+  // Period
+  const period = [];
+  PERIOD_VESSELS.forEach(pv => {
+    pv.durations.forEach(d => {
+      const kv = pv.v.replace(/[: \/\-]/g,'_');
+      const kd = d.replace(/ /g,'_');
+      const row = {
+        vessel: pv.v, duration: d,
+        jun26: gv(`pr_${kv}_${kd}_jun26`), jun26_dir: gv(`pr_${kv}_${kd}_jun26_dir`),
+        y27: gv(`pr_${kv}_${kd}_y27`), y27_dir: gv(`pr_${kv}_${kd}_y27_dir`),
+        y28: gv(`pr_${kv}_${kd}_y28`), y28_dir: gv(`pr_${kv}_${kd}_y28_dir`),
+        y29: gv(`pr_${kv}_${kd}_y29`), y29_dir: gv(`pr_${kv}_${kd}_y29_dir`),
+      };
+      if (row.jun26 || row.y27 || row.y28 || row.y29) period.push(row);
+    });
+  });
+
+  // S&P
+  const sp = SP_TYPES.map(t => {
+    const k = t.replace(/ /g,'_');
+    return { type:t, newbuild:gv('sp_nb_'+k), nb_dir:gv('sp_nb_dir_'+k),
+      resale:gv('sp_rs_'+k), rs_dir:gv('sp_rs_dir_'+k),
+      fiveyo:gv('sp_5y_'+k), fiveyo_dir:gv('sp_5y_dir_'+k),
+      tenyo:gv('sp_10y_'+k), tenyo_dir:gv('sp_10y_dir_'+k) };
+  }).filter(r => r.newbuild);
+
+  // Demo
+  const demo = DEMO_COUNTRIES.map(c => {
+    const k = c.replace(/ /g,'_');
+    return { country:c, dry:gv('demo_dry_'+k), dry_dir:gv('demo_dry_dir_'+k),
+      tanker:gv('demo_tnk_'+k), tanker_dir:gv('demo_tnk_dir_'+k),
+      container:gv('demo_con_'+k), cont_dir:gv('demo_con_dir_'+k) };
+  }).filter(r => r.dry);
+
+  // Baltic
+  const baltic = BALTIC_INDICES.map(idx => {
+    const k = idx.replace(/ /g,'_');
+    return { date: week_date, index:idx, bhsi38:0,bsi63:0,bpi82:0,bci182:0,
+      [`${idx.replace(/ /g,'').toLowerCase()}`]: gv('bal_'+k),
+      [`${idx.replace(/ /g,'').toLowerCase()}_dir`]: gv('bal_dir_'+k) };
+  });
+  // Reformat Baltic as one row
+  const balticRow = { date: week_date };
+  BALTIC_INDICES.forEach(idx => {
+    const k = idx.replace(/ /g,'_');
+    const fk = idx.replace(/ /g,'').toLowerCase();
+    balticRow[fk] = gv('bal_'+k);
+    balticRow[fk+'_dir'] = gv('bal_dir_'+k);
+  });
+  const balticArr = (balticRow.bhsi38||balticRow.bsi63||balticRow.bpi82||balticRow.bci182) ? [balticRow] : [];
+
+  // S&P Transactions
+  const spRaw = gv('f-sp-trans');
+  const sp_trans = spRaw ? spRaw.split('\n').filter(l=>l.trim()).map(l => {
+    const parts = l.split('|').map(s=>s.trim());
+    return { type: parts[0]||'', vessel: parts[1]||'', detail: parts[2]||'' };
+  }) : [];
+
+  // NB
+  const nb = NB_TYPES.map(nb => {
+    const k = nb.t.replace(/[ \-]/g,'_');
+    return { type:nb.t, size:nb.s,
+      china:gv('nb_cn_'+k), china_dir:gv('nb_cn_dir_'+k),
+      korea:gv('nb_kr_'+k), korea_dir:gv('nb_kr_dir_'+k),
+      japan:gv('nb_jp_'+k), japan_dir:gv('nb_jp_dir_'+k),
+      delivery:gv('nb_del_'+k) };
+  }).filter(r => r.china||r.korea||r.japan);
+
+  // Tanker
+  const tanker = TANKER_TYPES.map(tt => {
+    const k = (tt.c+'_'+tt.t).replace(/ /g,'_');
+    return { category:tt.c, type:tt.t,
+      y1_ecoscrub:gv('tnk_y1scr_'+k), y1_eco:gv('tnk_y1eco_'+k), y1_noneco:gv('tnk_y1ne_'+k), y1_dir:gv('tnk_y1_dir_'+k),
+      y3_ecoscrub:gv('tnk_y3scr_'+k), y3_eco:gv('tnk_y3eco_'+k), y3_noneco:gv('tnk_y3ne_'+k), y3_dir:gv('tnk_y3_dir_'+k) };
+  }).filter(r => r.y1_eco||r.y3_eco);
+
+  return { id: week_date, week_date, ffa, period, sp, demo, baltic:balticArr, sp_trans, nb, tanker };
+}
+
+async function submitWeek() {
+  const data = collectFormData();
+  if (!data) return;
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  const msg = document.getElementById('save-msg');
+  const err = document.getElementById('save-err');
+  msg.style.display = 'none'; err.style.display = 'none';
+  try {
+    const r = await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action:'add', entry: data, password: PW })
+    });
+    const j = await r.json();
+    if (j.success) {
+      allWeeks[data.week_date] = data;
+      populateWeekSelect();
+      msg.style.display = 'inline';
+      setTimeout(() => msg.style.display='none', 3000);
+    } else { err.style.display = 'inline'; }
+  } catch(ex) {
+    console.error(ex); err.style.display = 'inline';
+  }
+  btn.disabled = false; btn.textContent = 'Save Week to Spreadsheet';
+}
+</script>
+</body>
+</html>
