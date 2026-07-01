@@ -5,607 +5,231 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SSY Projects Vector</title>
 <style>
-:root{--navy:#0A1F3C;--navy2:#112952;--gold:#C8973A;--cream:#F5F2EC;--white:#FFFFFF;--text:#1A1A2E;--muted:#6B7280;--border:#D1C9B8;--up:#16A34A;--down:#DC2626;--flat:#6B7280;--row-alt:#F8F6F2;--shadow:0 2px 12px rgba(10,31,60,0.10);}
+:root{--navy:#0A1F3C;--navy2:#112952;--gold:#C8973A;--cream:#F5F2EC;--white:#FFF;--text:#1A1A2E;--muted:#6B7280;--border:#D1C9B8;--up:#16A34A;--down:#DC2626;--flat:#6B7280;--row-alt:#F8F6F2;--shadow:0 2px 12px rgba(10,31,60,.1);}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Segoe UI',Arial,sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
-#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--navy);}
-.login-box{background:var(--white);border-radius:12px;padding:48px 40px;box-shadow:0 8px 40px rgba(0,0,0,0.35);text-align:center;width:340px;}
+#login{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--navy);}
+.login-box{background:var(--white);border-radius:12px;padding:48px 40px;box-shadow:0 8px 40px rgba(0,0,0,.35);text-align:center;width:340px;}
 .login-box .logo{font-size:13px;letter-spacing:4px;color:var(--navy2);font-weight:700;text-transform:uppercase;margin-bottom:6px;}
 .login-box h1{font-size:22px;color:var(--navy);margin-bottom:4px;}
 .login-box p{font-size:13px;color:var(--muted);margin-bottom:28px;}
 .login-box input{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:6px;font-size:15px;margin-bottom:16px;outline:none;}
 .login-box input:focus{border-color:var(--gold);}
 .btn-primary{width:100%;padding:11px;background:var(--navy);color:var(--white);border:none;border-radius:6px;font-size:15px;font-weight:600;cursor:pointer;}
-.btn-primary:hover{background:var(--navy2);}
 #login-err{color:#DC2626;font-size:13px;margin-top:8px;display:none;}
 #app{display:none;}
 header{background:var(--navy);padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;}
-.header-logo{font-size:11px;letter-spacing:4px;color:var(--gold);font-weight:700;text-transform:uppercase;}
-.header-title{font-size:15px;color:var(--white);font-weight:500;margin-left:14px;}
-.week-badge{background:var(--gold);color:var(--navy);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;}
-#logout-btn{background:transparent;border:1px solid rgba(255,255,255,0.3);color:rgba(255,255,255,0.7);padding:5px 12px;border-radius:5px;font-size:12px;cursor:pointer;}
+.hlogo{font-size:11px;letter-spacing:4px;color:var(--gold);font-weight:700;text-transform:uppercase;}
+.htitle{font-size:15px;color:var(--white);margin-left:14px;}
+.wbadge{background:var(--gold);color:var(--navy);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;}
+#logout{background:transparent;border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);padding:5px 12px;border-radius:5px;font-size:12px;cursor:pointer;}
 nav{background:var(--white);border-bottom:2px solid var(--border);padding:0 32px;display:flex;gap:2px;overflow-x:auto;}
-.tab-btn{padding:12px 18px;font-size:13px;font-weight:600;color:var(--muted);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;}
-.tab-btn.active{color:var(--navy);border-bottom-color:var(--gold);}
+.tab{padding:12px 18px;font-size:13px;font-weight:600;color:var(--muted);border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-2px;}
+.tab.active{color:var(--navy);border-bottom-color:var(--gold);}
 main{padding:28px 32px;max-width:1280px;}
-.week-bar{display:flex;align-items:center;gap:16px;margin-bottom:24px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px 20px;box-shadow:var(--shadow);}
-.week-bar label{font-size:13px;font-weight:600;color:var(--navy);}
-.week-bar select{padding:6px 10px;border:1.5px solid var(--border);border-radius:5px;font-size:13px;outline:none;}
+.wbar{display:flex;align-items:center;gap:16px;margin-bottom:24px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:12px 20px;box-shadow:var(--shadow);}
+.wbar label{font-size:13px;font-weight:600;color:var(--navy);}
+.wbar select{padding:6px 10px;border:1.5px solid var(--border);border-radius:5px;font-size:13px;outline:none;}
 .card{background:var(--white);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow);margin-bottom:24px;overflow:hidden;}
-.card-head{background:var(--navy);padding:10px 20px;display:flex;align-items:center;gap:10px;}
-.card-head h3{font-size:13px;font-weight:700;color:var(--white);letter-spacing:1px;text-transform:uppercase;}
-.card-head .pill{background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
-.tbl-wrap{overflow-x:auto;}
+.chead{background:var(--navy);padding:10px 20px;display:flex;align-items:center;gap:10px;}
+.chead h3{font-size:13px;font-weight:700;color:var(--white);letter-spacing:1px;text-transform:uppercase;}
+.pill{background:var(--gold);color:var(--navy);font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.twrap{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:13px;}
-th{background:#EEF0F5;color:var(--navy2);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;padding:9px 12px;border-bottom:2px solid var(--border);text-align:right;white-space:nowrap;}
+th{background:#EEF0F5;color:var(--navy2);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.6px;padding:9px 12px;border-bottom:2px solid var(--border);text-align:right;white-space:nowrap;}
 th:first-child,th:nth-child(2){text-align:left;}
 td{padding:8px 12px;border-bottom:1px solid var(--border);text-align:right;}
 td:first-child,td:nth-child(2){text-align:left;font-weight:600;}
-tr:last-child td{border-bottom:none;}
 tr:nth-child(even){background:var(--row-alt);}
-.group-sep td{background:#E8EBF2!important;font-weight:700;color:var(--navy);padding:5px 12px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;}
-.arrow-up{color:var(--up);}
-.arrow-down{color:var(--down);}
-.arrow-flat{color:var(--flat);}
-.sp-list{padding:16px 20px;display:flex;flex-direction:column;gap:10px;}
-.sp-item{background:var(--row-alt);border:1px solid var(--border);border-radius:7px;padding:10px 16px;}
-.sp-item .sp-type{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
-.sp-item .sp-vessel{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
-.sp-item .sp-detail{font-size:12px;color:var(--muted);}
-.disclaimer{font-size:10.5px;color:var(--muted);padding:10px 20px 14px;line-height:1.6;border-top:1px solid var(--border);}
+.gsep td{background:#E8EBF2!important;font-weight:700;color:var(--navy);padding:5px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.5px;}
+.au{color:var(--up);}.ad{color:var(--down);}.af{color:var(--flat);}
+.splist{padding:16px 20px;display:flex;flex-direction:column;gap:10px;}
+.spitem{background:var(--row-alt);border:1px solid var(--border);border-radius:7px;padding:10px 16px;}
+.sptype{font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+.spvessel{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.spdetail{font-size:12px;color:var(--muted);}
+.disc{font-size:10.5px;color:var(--muted);padding:10px 20px 14px;line-height:1.6;border-top:1px solid var(--border);}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
 @media(max-width:900px){.grid2{grid-template-columns:1fr;}}
-.loader{display:none;text-align:center;padding:40px;font-size:13px;color:var(--muted);}
-.no-data{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
-.btn-save{padding:8px 20px;background:var(--navy);color:var(--white);border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;}
-.btn-save:hover{background:var(--navy2);}
-.btn-save:disabled{background:#aaa;cursor:not-allowed;}
-.save-msg{font-size:12px;color:var(--up);margin-left:10px;display:none;}
-.save-err{font-size:12px;color:var(--down);margin-left:10px;display:none;}
-/* CHARTROOM */
-.ct-hero{background:var(--navy);padding:32px 36px;border-radius:10px;margin-bottom:24px;}
-.ct-eyebrow{font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
-.ct-title{font-size:28px;font-weight:800;color:var(--white);margin-bottom:8px;}
-.ct-meta{font-size:12px;color:rgba(255,255,255,0.5);}
-.ct-body{font-size:14px;line-height:1.85;color:var(--text);padding:28px 32px;}
-.ct-body h3{font-size:12px;font-weight:800;color:var(--navy);letter-spacing:1.5px;text-transform:uppercase;margin:28px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--gold);}
-.ct-body p{margin-bottom:16px;}
-.ct-body blockquote{border-left:3px solid var(--gold);padding:12px 20px;margin:20px 0;font-style:italic;color:var(--navy2);background:#F0EDE5;border-radius:0 6px 6px 0;}
-.ct-archive-item{display:flex;align-items:flex-start;gap:16px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;}
-.ct-archive-item:hover{background:var(--row-alt);}
-.ct-date{font-size:12px;font-weight:700;color:var(--gold);min-width:110px;padding-top:2px;}
-.ct-item-title{font-size:14px;font-weight:700;color:var(--navy);}
-.ct-item-preview{font-size:12px;color:var(--muted);margin-top:2px;}
-/* UPLOAD */
-.upload-zone{border:2px dashed var(--gold);border-radius:10px;padding:48px;text-align:center;cursor:pointer;background:rgba(200,151,58,0.04);margin-bottom:20px;transition:background 0.2s;}
-.upload-zone:hover,.upload-zone.dragover{background:rgba(200,151,58,0.12);}
-.upload-zone .uz-icon{font-size:48px;margin-bottom:12px;}
-.upload-zone h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:6px;}
-.upload-zone p{font-size:13px;color:var(--muted);}
-.progress-bar{height:6px;background:#E5E7EB;border-radius:3px;overflow:hidden;margin-top:16px;display:none;}
-.progress-fill{height:100%;background:var(--gold);border-radius:3px;transition:width 0.4s;width:0%;}
-.extract-status{margin-top:14px;font-size:13px;color:var(--navy);display:none;line-height:1.7;}
-.extract-status.error{color:var(--down);}
-.preview-section{background:#F0EDE5;border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:10px;}
-.preview-section h4{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--navy);margin-bottom:6px;}
-.preview-section pre{font-size:11px;color:var(--text);white-space:pre-wrap;max-height:100px;overflow-y:auto;}
+.loader{text-align:center;padding:40px;font-size:13px;color:var(--muted);}
+.nodata{text-align:center;padding:40px;color:var(--muted);font-size:13px;}
+.cthero{background:var(--navy);padding:32px 36px;border-radius:10px;margin-bottom:24px;}
+.cteyebrow{font-size:11px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
+.cttitle{font-size:28px;font-weight:800;color:var(--white);margin-bottom:8px;}
+.ctmeta{font-size:12px;color:rgba(255,255,255,.5);}
+.ctbody{font-size:14px;line-height:1.85;color:var(--text);padding:28px 32px;}
+.ctbody h3{font-size:12px;font-weight:800;color:var(--navy);letter-spacing:1.5px;text-transform:uppercase;margin:28px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--gold);}
+.ctbody p{margin-bottom:16px;}
+.ctbody blockquote{border-left:3px solid var(--gold);padding:12px 20px;margin:20px 0;font-style:italic;color:var(--navy2);background:#F0EDE5;border-radius:0 6px 6px 0;}
+.ctitem{display:flex;align-items:flex-start;gap:16px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.ctdate{font-size:12px;font-weight:700;color:var(--gold);min-width:110px;padding-top:2px;}
+.cttl{font-size:14px;font-weight:700;color:var(--navy);}
+.btn{padding:7px 16px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;}
 </style>
 </head>
 <body>
-
-<div id="login-screen">
+<div id="login">
   <div class="login-box">
-    <div class="logo">SSY Group</div>
-    <h1>Projects Vector</h1>
-    <p>Weekly Market Report</p>
-    <input type="password" id="pw-input" placeholder="Password">
-    <button class="btn-primary" onclick="doLogin()">Sign In</button>
+    <div class="logo">SSY Group</div><h1>Projects Vector</h1><p>Weekly Market Report</p>
+    <input type="password" id="pw" placeholder="Password">
+    <button class="btn-primary" onclick="login()">Sign In</button>
     <div id="login-err">Incorrect password.</div>
   </div>
 </div>
-
 <div id="app">
   <header>
-    <div style="display:flex;align-items:center">
-      <span class="header-logo">SSY Projects &amp; Newbuilds</span>
-      <span class="header-title">Weekly Market Report</span>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px">
-      <span class="week-badge" id="header-date">—</span>
-      <button id="logout-btn" onclick="doLogout()">Sign Out</button>
-    </div>
+    <div style="display:flex;align-items:center"><span class="hlogo">SSY Projects &amp; Newbuilds</span><span class="htitle">Weekly Market Report</span></div>
+    <div style="display:flex;align-items:center;gap:12px"><span class="wbadge" id="hdate">—</span><button id="logout" onclick="location.reload()">Sign Out</button></div>
   </header>
-
   <nav>
-    <button class="tab-btn active" onclick="showTab('view',this)">📊 Weekly Report</button>
-    <button class="tab-btn" onclick="showTab('chartroom',this)">📰 Chartroom</button>
-    <button class="tab-btn" onclick="showTab('upload',this)">📤 PDF Import</button>
-    <button class="tab-btn" onclick="showTab('admin',this)">✏️ Manual Entry</button>
-    <button class="tab-btn" onclick="showTab('archive',this)">📁 Archive</button>
+    <button class="tab active" onclick="tab('view',this)">📊 Weekly Report</button>
+    <button class="tab" onclick="tab('chartroom',this)">📰 Chartroom</button>
   </nav>
-
   <main>
-    <div class="loader" id="loader">Loading…</div>
-
-    <!-- WEEKLY REPORT -->
-    <div id="tab-view">
-      <div class="week-bar">
-        <label>Week of&nbsp;</label>
-        <select id="week-select" onchange="loadWeek(this.value)"></select>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>Dry FFA Curves</h3><span class="pill">USD/Day</span></div>
-        <div class="tbl-wrap"><table><thead><tr>
-          <th>Period</th><th>HANDY BHSI38</th><th></th><th>SMX BSI58</th><th></th><th>PMX BPI82</th><th></th><th>CAPE BCI180</th><th></th>
-        </tr></thead><tbody id="body-ffa"><tr><td colspan="9" class="no-data">Select a week</td></tr></tbody></table></div>
-        <div class="disclaimer">* FFA pricing by SSY Futures Ltd (FCA regulated). For information purposes only.</div>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>Period &amp; Project Rates</h3><span class="pill">USD/Day</span></div>
-        <div class="tbl-wrap"><table><thead><tr>
-          <th>Vessel</th><th>Duration</th><th>Jun '26</th><th></th><th>2H 2027</th><th></th><th>2H 2028</th><th></th><th>2H 2029</th><th></th>
-        </tr></thead><tbody id="body-period"><tr><td colspan="10" class="no-data">Select a week</td></tr></tbody></table></div>
-        <div class="disclaimer">* 1–2yr gross 3.75% address comm. 3/5/7yr net. ECO Japanese-built non-scrubber vessels, prompt Pacific.</div>
-      </div>
+    <div class="loader" id="loader">Loading data from Google Sheets…</div>
+    <div id="view" style="display:none">
+      <div class="wbar"><label>Week of&nbsp;</label><select id="wsel" onchange="loadWeek(this.value)"></select></div>
+      <div class="card"><div class="chead"><h3>Dry FFA Curves</h3><span class="pill">USD/Day</span></div><div class="twrap"><table><thead><tr><th>Period</th><th>HANDY</th><th></th><th>SMX</th><th></th><th>PMX</th><th></th><th>CAPE</th><th></th></tr></thead><tbody id="b-ffa"></tbody></table></div></div>
+      <div class="card"><div class="chead"><h3>Period &amp; Project Rates</h3><span class="pill">USD/Day</span></div><div class="twrap"><table><thead><tr><th>Vessel</th><th>Duration</th><th>Jun'26</th><th></th><th>2H27</th><th></th><th>2H28</th><th></th><th>2H29</th><th></th></tr></thead><tbody id="b-period"></tbody></table></div></div>
       <div class="grid2">
-        <div class="card">
-          <div class="card-head"><h3>S&amp;P &amp; Newbuilding</h3><span class="pill">USD million</span></div>
-          <div class="tbl-wrap"><table><thead><tr><th>Type</th><th>Newbuild</th><th></th><th>Resale</th><th></th><th>5 YO</th><th></th><th>10 YO</th><th></th></tr></thead>
-          <tbody id="body-sp"><tr><td colspan="9" class="no-data">Select a week</td></tr></tbody></table></div>
-        </div>
-        <div class="card">
-          <div class="card-head"><h3>Demolition Market</h3><span class="pill">USD/LDT</span></div>
-          <div class="tbl-wrap"><table><thead><tr><th>Country</th><th>Drybulk</th><th></th><th>Tanker</th><th></th><th>Container</th><th></th></tr></thead>
-          <tbody id="body-demo"><tr><td colspan="7" class="no-data">Select a week</td></tr></tbody></table></div>
-        </div>
+        <div class="card"><div class="chead"><h3>S&amp;P &amp; Newbuild</h3><span class="pill">USD mill</span></div><div class="twrap"><table><thead><tr><th>Type</th><th>NB</th><th></th><th>Resale</th><th></th><th>5YO</th><th></th><th>10YO</th><th></th></tr></thead><tbody id="b-sp"></tbody></table></div></div>
+        <div class="card"><div class="chead"><h3>Demolition</h3><span class="pill">USD/LDT</span></div><div class="twrap"><table><thead><tr><th>Country</th><th>Dry</th><th></th><th>Tanker</th><th></th><th>Cont</th><th></th></tr></thead><tbody id="b-demo"></tbody></table></div></div>
       </div>
-      <div class="card">
-        <div class="card-head"><h3>Baltic Freight Average</h3><span class="pill">USD/Day</span></div>
-        <div class="tbl-wrap"><table><thead><tr><th>BHSI 38</th><th></th><th>BSI 63</th><th></th><th>BPI 82</th><th></th><th>BCI 182</th><th></th></tr></thead>
-        <tbody id="body-baltic"><tr><td colspan="8" class="no-data">Select a week</td></tr></tbody></table></div>
-        <div class="disclaimer">* Baltic Exchange levels on the day before publication.</div>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>Newbuilding Prices</h3><span class="pill">USD million</span></div>
-        <div class="tbl-wrap"><table><thead><tr><th>Type</th><th>Size</th><th>China</th><th></th><th>Korea</th><th></th><th>Japan</th><th></th><th>Delivery</th></tr></thead>
-        <tbody id="body-nb"><tr><td colspan="9" class="no-data">Select a week</td></tr></tbody></table></div>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>Tanker Period Rates</h3><span class="pill">USD/Day</span></div>
-        <div class="tbl-wrap"><table><thead><tr>
-          <th>Type</th><th>1Y EcoScr</th><th>1Y Eco</th><th>1Y Non-Eco</th><th></th><th>3Y EcoScr</th><th>3Y Eco</th><th>3Y Non-Eco</th><th></th>
-        </tr></thead><tbody id="body-tanker"><tr><td colspan="9" class="no-data">Select a week</td></tr></tbody></table></div>
-        <div class="disclaimer">* USD/Day. Assessment purposes only.</div>
-      </div>
-      <div class="card">
-        <div class="card-head"><h3>S&amp;P Transactions &amp; Period Fixtures</h3></div>
-        <div class="sp-list" id="list-sp-trans"><div class="no-data">Select a week</div></div>
-      </div>
+      <div class="card"><div class="chead"><h3>Baltic Freight Average</h3><span class="pill">USD/Day</span></div><div class="twrap"><table><thead><tr><th>BHSI38</th><th></th><th>BSI63</th><th></th><th>BPI82</th><th></th><th>BCI182</th><th></th></tr></thead><tbody id="b-baltic"></tbody></table></div></div>
+      <div class="card"><div class="chead"><h3>Newbuilding Prices</h3><span class="pill">USD mill</span></div><div class="twrap"><table><thead><tr><th>Type</th><th>Size</th><th>China</th><th></th><th>Korea</th><th></th><th>Japan</th><th></th><th>Delivery</th></tr></thead><tbody id="b-nb"></tbody></table></div></div>
+      <div class="card"><div class="chead"><h3>Tanker Period Rates</h3><span class="pill">USD/Day</span></div><div class="twrap"><table><thead><tr><th>Type</th><th>1Y Scr</th><th>1Y Eco</th><th>1Y Non</th><th></th><th>3Y Scr</th><th>3Y Eco</th><th>3Y Non</th><th></th></tr></thead><tbody id="b-tanker"></tbody></table></div></div>
+      <div class="card"><div class="chead"><h3>S&amp;P Transactions &amp; Fixtures</h3></div><div class="splist" id="b-trans"></div></div>
     </div>
-
-    <!-- CHARTROOM -->
-    <div id="tab-chartroom" style="display:none">
-      <div id="ct-list-view">
-        <div class="card">
-          <div class="card-head"><h3>Chartroom Archive</h3><span class="pill">Bi-weekly Commentary</span></div>
-          <div style="padding:16px 20px" id="ct-archive-list"><div class="no-data">No entries yet. Import a PDF first.</div></div>
-        </div>
-      </div>
-      <div id="ct-article-view" style="display:none">
-        <button class="btn-save" style="margin-bottom:16px;padding:7px 16px;font-size:12px" onclick="showCtList()">← Back to Archive</button>
-        <div class="ct-hero">
-          <div class="ct-eyebrow">SSY Projects Vector — Chartroom</div>
-          <div class="ct-title" id="ct-art-title">—</div>
-          <div class="ct-meta" id="ct-art-meta">—</div>
-        </div>
-        <div class="card"><div class="ct-body" id="ct-art-body"></div></div>
-      </div>
-    </div>
-
-    <!-- PDF IMPORT -->
-    <div id="tab-upload" style="display:none">
-      <div class="card">
-        <div class="card-head"><h3>📤 PDF Import — Auto Extract &amp; Save</h3></div>
-        <div style="padding:24px">
-          <p style="font-size:13px;color:var(--muted);margin-bottom:20px">SSY Projects Vector Weekly Report の PDF をドロップするだけで全データを自動抽出して Google Spreadsheet に保存します。</p>
-          <div class="upload-zone" id="upload-zone" onclick="document.getElementById('pdf-file').click()">
-            <div class="uz-icon">📄</div>
-            <h3>PDF をドロップ、またはクリックして選択</h3>
-            <p>SSY Projects Vector Weekly Report (.pdf)</p>
-            <input type="file" id="pdf-file" accept=".pdf" style="display:none" onchange="handlePdf(this.files[0])">
-          </div>
-          <div class="progress-bar" id="prog-bar"><div class="progress-fill" id="prog-fill"></div></div>
-          <div class="extract-status" id="ext-status"></div>
-          <div id="preview-area" style="display:none;margin-top:20px">
-            <h3 style="font-size:14px;font-weight:700;color:var(--navy);margin-bottom:14px">抽出データプレビュー</h3>
-            <div id="preview-sections"></div>
-            <div style="display:flex;align-items:center;margin-top:16px;gap:12px">
-              <button class="btn-save" id="btn-confirm" onclick="confirmSave()">✓ Spreadsheet に保存</button>
-              <button class="btn-save" style="background:#6B7280" onclick="resetUpload()">✕ キャンセル</button>
-              <span class="save-msg" id="pdf-ok">✓ 保存しました！ Weekly Report タブに移動します…</span>
-              <span class="save-err" id="pdf-err">✗ 保存に失敗しました</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- MANUAL ENTRY -->
-    <div id="tab-admin" style="display:none">
-      <div class="card">
-        <div class="card-head"><h3>Manual Entry</h3></div>
-        <div style="padding:20px">
-          <div style="margin-bottom:12px"><label style="font-size:12px;font-weight:600;color:var(--navy);display:block;margin-bottom:4px">Week Date</label><input type="date" id="f-date" style="padding:8px 10px;border:1.5px solid var(--border);border-radius:5px;font-size:13px;outline:none;"></div>
-          <div style="margin-bottom:12px"><label style="font-size:12px;font-weight:600;color:var(--navy);display:block;margin-bottom:4px">Chartroom Title</label><input type="text" id="f-ct-title" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:5px;font-size:13px;outline:none;" placeholder="e.g. Picks and Shovels"></div>
-          <div style="margin-bottom:16px"><label style="font-size:12px;font-weight:600;color:var(--navy);display:block;margin-bottom:4px">Chartroom Body (HTML可)</label><textarea id="f-ct-body" rows="6" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:5px;font-size:13px;outline:none;" placeholder="Article text..."></textarea></div>
-          <div style="margin-bottom:16px"><label style="font-size:12px;font-weight:600;color:var(--navy);display:block;margin-bottom:4px">S&amp;P Transactions (1行1件: TYPE | Vessel | Details)</label><textarea id="f-sp-trans" rows="4" style="width:100%;padding:8px 10px;border:1.5px solid var(--border);border-radius:5px;font-size:12px;outline:none;" placeholder="Handy | MARINA R (38k dwt 2010) | Sold USD 10.8 mill TC attached Q2 2027"></textarea></div>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:12px">※ 数値データ（FFA・レート・S&amp;P価格等）はPDFインポートタブをご利用ください。</p>
-          <div style="display:flex;align-items:center;gap:10px">
-            <button class="btn-save" onclick="submitManual()">Save to Spreadsheet</button>
-            <span class="save-msg" id="man-ok">✓ Saved!</span>
-            <span class="save-err" id="man-err">✗ Failed</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ARCHIVE -->
-    <div id="tab-archive" style="display:none">
-      <div class="card">
-        <div class="card-head"><h3>All Stored Weeks</h3></div>
-        <div id="archive-list" style="padding:16px 20px"><div class="no-data">Loading…</div></div>
+    <div id="chartroom" style="display:none">
+      <div id="ct-list"><div class="card"><div class="chead"><h3>Chartroom Archive</h3><span class="pill">Commentary</span></div><div style="padding:16px 20px" id="ct-arch"></div></div></div>
+      <div id="ct-art" style="display:none">
+        <button class="btn" style="margin-bottom:16px" onclick="ctList()">← Back</button>
+        <div class="cthero"><div class="cteyebrow">SSY Projects Vector — Chartroom</div><div class="cttitle" id="ct-t">—</div><div class="ctmeta" id="ct-m">—</div></div>
+        <div class="card"><div class="ctbody" id="ct-b"></div></div>
       </div>
     </div>
   </main>
 </div>
-
 <script>
-const API_URL='https://script.google.com/macros/s/AKfycbwcYYfdgwPBo2aztndKkoqvbtEYcOtjP-nvWybNON7j4n0COPfTlWLp1Yb484Kiz-UX/exec';
-const REPORT_PASSWORD='ssy2026';
-let PW='',allWeeks={},extractedData=null;
+// ====== SETUP: paste your Google Sheet ID here ======
+const SHEET_ID = '16Xb9kHhD5py4N6H7vy7Cn9BegH7F4B8WCq4j_gsQbO0';
+const PASSWORD = 'ssy2026';
+// ====================================================
 
-function doLogin(){
-  const v=document.getElementById('pw-input').value;
-  if(v===REPORT_PASSWORD){PW=v;document.getElementById('login-screen').style.display='none';document.getElementById('app').style.display='block';initApp();}
-  else document.getElementById('login-err').style.display='block';
+const SHEETS = ['FFA','PERIOD','SP','DEMO','BALTIC','NB','TANKER','SP_TRANS','CHARTROOM'];
+let DB = {};
+
+function login(){
+  if(document.getElementById('pw').value===PASSWORD){
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').style.display='block';
+    init();
+  } else document.getElementById('login-err').style.display='block';
 }
-document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-function doLogout(){PW='';location.reload();}
+document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
 
-function showTab(name,btn){
-  ['view','chartroom','upload','admin','archive'].forEach(t=>document.getElementById('tab-'+t).style.display='none');
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+name).style.display='block';
+function tab(n,btn){
+  document.getElementById('view').style.display=n==='view'?'block':'none';
+  document.getElementById('chartroom').style.display=n==='chartroom'?'block':'none';
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  if(name==='archive')renderArchive();
-  if(name==='chartroom')renderCtArchive();
+  if(n==='chartroom')renderCtArch();
 }
 
-async function initApp(){
-  await fetchAllWeeks();
-  populateWeekSelect();
-  const weeks=Object.keys(allWeeks).sort().reverse();
-  if(weeks.length)loadWeek(weeks[0]);
-  setupDragDrop();
+// Google Sheets gviz JSON fetch
+function sheetUrl(name){
+  return 'https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&sheet='+encodeURIComponent(name);
 }
 
-async function fetchAllWeeks(){
-  document.getElementById('loader').style.display='block';
+async function fetchSheet(name){
+  const r = await fetch(sheetUrl(name));
+  const txt = await r.text();
+  // gviz returns: /*O_o*/google.visualization.Query.setResponse({...});
+  const json = JSON.parse(txt.substring(txt.indexOf('{'), txt.lastIndexOf('}')+1));
+  const cols = json.table.cols.map(c=>c.label);
+  return json.table.rows.map(row=>{
+    const obj={};
+    row.c.forEach((cell,i)=>{ obj[cols[i]] = cell ? (cell.v!==null?cell.v:'') : ''; });
+    return obj;
+  });
+}
+
+async function init(){
   try{
-    const r=await fetch(API_URL+'?password='+encodeURIComponent(PW));
-    const j=await r.json();
-    if(j.entries){allWeeks={};j.entries.forEach(e=>{allWeeks[e.week_date]=e;});}
-  }catch(ex){console.warn('API:',ex);}
-  document.getElementById('loader').style.display='none';
+    for(const s of SHEETS){ DB[s] = await fetchSheet(s); }
+    document.getElementById('loader').style.display='none';
+    document.getElementById('view').style.display='block';
+    buildWeekSelect();
+    const weeks = getWeeks();
+    if(weeks.length) loadWeek(weeks[0]);
+  }catch(e){
+    document.getElementById('loader').innerHTML='読み込みエラー: '+e.message+'<br>SheetのIDと公開設定を確認してください。';
+  }
 }
 
-function populateWeekSelect(){
-  const sel=document.getElementById('week-select');
+function getWeeks(){
+  const set = new Set();
+  (DB.FFA||[]).forEach(r=>set.add(String(r.week_date)));
+  return [...set].sort().reverse();
+}
+function buildWeekSelect(){
+  const sel=document.getElementById('wsel');
   sel.innerHTML='';
-  const weeks=Object.keys(allWeeks).sort().reverse();
-  if(!weeks.length){sel.innerHTML='<option>No data yet — import a PDF first</option>';return;}
-  weeks.forEach(w=>{const o=document.createElement('option');o.value=w;o.text=fmtDate(w);sel.appendChild(o);});
+  getWeeks().forEach(w=>{const o=document.createElement('option');o.value=w;o.text=fmt(w);sel.appendChild(o);});
 }
-
-function fmtDate(d){
-  if(!d)return'';
-  try{return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}
-  catch(e){return d;}
-}
-
-function arrowHtml(dir){
-  if(!dir||['=','è','è','➔','→','flat'].includes(dir))return'<span class="arrow-flat">→</span>';
-  if(['é','é','↑','up','🡽'].includes(dir))return'<span class="arrow-up">↑</span>';
-  if(['ê','ê','↓','down','🢆'].includes(dir))return'<span class="arrow-down">↓</span>';
-  return'<span class="arrow-flat">→</span>';
-}
-
-function n(v,dec=0){
-  if(v===null||v===undefined||v===''||v==='N/A'||v==='—')return'—';
-  const num=parseFloat(String(v).replace(/,/g,''));
-  if(isNaN(num))return String(v);
-  return num.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});
-}
+function fmt(d){try{return new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});}catch(e){return d;}}
+function filt(sheet,wk){return (DB[sheet]||[]).filter(r=>String(r.week_date)===String(wk));}
+function ar(d){if(d==='up')return '<span class=au>↑</span>';if(d==='dn')return '<span class=ad>↓</span>';if(d==='flat')return '<span class=af>→</span>';return '';}
+function num(v){if(v===''||v===null||v===undefined)return '—';const n=parseFloat(v);return isNaN(n)?v:n.toLocaleString('en-US');}
 
 function loadWeek(wk){
-  if(!wk||!allWeeks[wk])return;
-  document.getElementById('header-date').textContent=fmtDate(wk);
-  const d=allWeeks[wk];
-  renderFFA(d.ffa||[]);renderPeriod(d.period||[]);renderSP(d.sp||[]);
-  renderDemo(d.demo||[]);renderBaltic(d.baltic||[]);renderNB(d.nb||[]);
-  renderTanker(d.tanker||[]);renderTrans(d.sp_trans||[]);
-}
-
-function renderFFA(rows){
-  const tb=document.getElementById('body-ffa');
-  if(!rows.length){tb.innerHTML='<tr><td colspan="9" class="no-data">No data</td></tr>';return;}
-  tb.innerHTML=rows.map(r=>`<tr><td>${r.period||''}</td><td>${n(r.handy)}</td><td>${arrowHtml(r.handy_dir)}</td><td>${n(r.smx)}</td><td>${arrowHtml(r.smx_dir)}</td><td>${n(r.pmx)}</td><td>${arrowHtml(r.pmx_dir)}</td><td>${n(r.cape)}</td><td>${arrowHtml(r.cape_dir)}</td></tr>`).join('');
-}
-
-function renderPeriod(rows){
-  const tb=document.getElementById('body-period');
-  if(!rows.length){tb.innerHTML='<tr><td colspan="10" class="no-data">No data</td></tr>';return;}
-  let html='',lv='';
-  rows.forEach(r=>{
-    if(r.vessel!==lv){html+=`<tr class="group-sep"><td colspan="10">${r.vessel}</td></tr>`;lv=r.vessel;}
-    html+=`<tr><td></td><td>${r.duration||''}</td><td>${n(r.jun26)}</td><td>${arrowHtml(r.jun26_dir)}</td><td>${n(r.y27)}</td><td>${arrowHtml(r.y27_dir)}</td><td>${n(r.y28)}</td><td>${arrowHtml(r.y28_dir)}</td><td>${n(r.y29)}</td><td>${arrowHtml(r.y29_dir)}</td></tr>`;
+  document.getElementById('hdate').textContent=fmt(wk);
+  // FFA
+  document.getElementById('b-ffa').innerHTML=filt('FFA',wk).map(r=>`<tr><td>${r.period}</td><td>${num(r.handy)}</td><td>${ar(r.handy_dir)}</td><td>${num(r.smx)}</td><td>${ar(r.smx_dir)}</td><td>${num(r.pmx)}</td><td>${ar(r.pmx_dir)}</td><td>${num(r.cape)}</td><td>${ar(r.cape_dir)}</td></tr>`).join('');
+  // PERIOD grouped
+  let ph='',lv='';
+  filt('PERIOD',wk).forEach(r=>{
+    if(r.vessel!==lv){ph+=`<tr class=gsep><td colspan=10>${r.vessel}</td></tr>`;lv=r.vessel;}
+    ph+=`<tr><td></td><td>${r.duration}</td><td>${num(r.jun26)}</td><td>${ar(r.jun26_dir)}</td><td>${num(r.y27)}</td><td>${ar(r.y27_dir)}</td><td>${num(r.y28)}</td><td>${ar(r.y28_dir)}</td><td>${num(r.y29)}</td><td>${ar(r.y29_dir)}</td></tr>`;
   });
-  tb.innerHTML=html;
-}
-
-function renderSP(rows){
-  const tb=document.getElementById('body-sp');
-  if(!rows.length){tb.innerHTML='<tr><td colspan="9" class="no-data">No data</td></tr>';return;}
-  tb.innerHTML=rows.map(r=>`<tr><td>${r.type||''}</td><td>${n(r.newbuild,2)}</td><td>${arrowHtml(r.nb_dir)}</td><td>${n(r.resale,2)}</td><td>${arrowHtml(r.rs_dir)}</td><td>${n(r.fiveyo,2)}</td><td>${arrowHtml(r.fiveyo_dir)}</td><td>${n(r.tenyo,2)}</td><td>${arrowHtml(r.tenyo_dir)}</td></tr>`).join('');
-}
-
-function renderDemo(rows){
-  const tb=document.getElementById('body-demo');
-  if(!rows.length){tb.innerHTML='<tr><td colspan="7" class="no-data">No data</td></tr>';return;}
-  tb.innerHTML=rows.map(r=>`<tr><td>${r.country||''}</td><td>${n(r.dry)}</td><td>${arrowHtml(r.dry_dir)}</td><td>${n(r.tanker)}</td><td>${arrowHtml(r.tanker_dir)}</td><td>${n(r.container)}</td><td>${arrowHtml(r.cont_dir)}</td></tr>`).join('');
-}
-
-function renderBaltic(rows){
-  const tb=document.getElementById('body-baltic');
-  if(!rows.length){tb.innerHTML='<tr><td colspan="8" class="no-data">No data</td></tr>';return;}
-  tb.innerHTML=rows.map(r=>`<tr><td>${n(r.bhsi38)}</td><td>${arrowHtml(r.bhsi38_dir)}</td><td>${n(r.bsi63)}</td><td>${arrowHtml(r.bsi63_dir)}</td><td>${n(r.bpi82)}</td><td>${arrowHtml(r.bpi82_dir)}</td><td>${n(r.bci182)}</td><td>${arrowHtml(r.bci182_dir)}</td></tr>`).join('');
-}
-
-function renderNB(rows){
-  const tb=document.getElementById('body-nb');
-  if(!rows.length){tb.innerHTML='<tr><td colspan="9" class="no-data">No data</td></tr>';return;}
-  tb.innerHTML=rows.map(r=>`<tr><td>${r.type||''}</td><td>${r.size||''}</td><td>${r.china||'—'}</td><td>${arrowHtml(r.china_dir)}</td><td>${r.korea||'—'}</td><td>${arrowHtml(r.korea_dir)}</td><td>${r.japan||'—'}</td><td>${arrowHtml(r.japan_dir)}</td><td>${r.delivery||''}</td></tr>`).join('');
-}
-
-function renderTanker(rows){
-  const tb=document.getElementById('body-tanker');
-  if(!rows.length){tb.innerHTML='<tr><td colspan="9" class="no-data">No data</td></tr>';return;}
-  let html='',lc='';
-  rows.forEach(r=>{
-    if(r.category!==lc){html+=`<tr class="group-sep"><td colspan="9">${r.category}</td></tr>`;lc=r.category;}
-    html+=`<tr><td>${r.type||''}</td><td>${n(r.y1_ecoscrub)}</td><td>${n(r.y1_eco)}</td><td>${n(r.y1_noneco)}</td><td>${arrowHtml(r.y1_dir)}</td><td>${n(r.y3_ecoscrub)}</td><td>${n(r.y3_eco)}</td><td>${n(r.y3_noneco)}</td><td>${arrowHtml(r.y3_dir)}</td></tr>`;
+  document.getElementById('b-period').innerHTML=ph;
+  // SP
+  document.getElementById('b-sp').innerHTML=filt('SP',wk).map(r=>`<tr><td>${r.type}</td><td>${num(r.newbuild)}</td><td>${ar(r.nb_dir)}</td><td>${num(r.resale)}</td><td>${ar(r.rs_dir)}</td><td>${num(r.fiveyo)}</td><td>${ar(r.fiveyo_dir)}</td><td>${num(r.tenyo)}</td><td>${ar(r.tenyo_dir)}</td></tr>`).join('');
+  // DEMO
+  document.getElementById('b-demo').innerHTML=filt('DEMO',wk).map(r=>`<tr><td>${r.country}</td><td>${num(r.dry)}</td><td>${ar(r.dry_dir)}</td><td>${num(r.tanker)}</td><td>${ar(r.tanker_dir)}</td><td>${num(r.container)}</td><td>${ar(r.cont_dir)}</td></tr>`).join('');
+  // BALTIC
+  document.getElementById('b-baltic').innerHTML=filt('BALTIC',wk).map(r=>`<tr><td>${num(r.bhsi38)}</td><td>${ar(r.bhsi38_dir)}</td><td>${num(r.bsi63)}</td><td>${ar(r.bsi63_dir)}</td><td>${num(r.bpi82)}</td><td>${ar(r.bpi82_dir)}</td><td>${num(r.bci182)}</td><td>${ar(r.bci182_dir)}</td></tr>`).join('');
+  // NB
+  document.getElementById('b-nb').innerHTML=filt('NB',wk).map(r=>`<tr><td>${r.type}</td><td>${r.size}</td><td>${r.china||'—'}</td><td>${ar(r.china_dir)}</td><td>${r.korea||'—'}</td><td>${ar(r.korea_dir)}</td><td>${r.japan||'—'}</td><td>${ar(r.japan_dir)}</td><td>${r.delivery}</td></tr>`).join('');
+  // TANKER grouped
+  let th='',lc='';
+  filt('TANKER',wk).forEach(r=>{
+    if(r.category!==lc){th+=`<tr class=gsep><td colspan=9>${r.category}</td></tr>`;lc=r.category;}
+    th+=`<tr><td>${r.type}</td><td>${num(r.y1_ecoscrub)}</td><td>${num(r.y1_eco)}</td><td>${num(r.y1_noneco)}</td><td>${ar(r.y1_dir)}</td><td>${num(r.y3_ecoscrub)}</td><td>${num(r.y3_eco)}</td><td>${num(r.y3_noneco)}</td><td>${ar(r.y3_dir)}</td></tr>`;
   });
-  tb.innerHTML=html;
+  document.getElementById('b-tanker').innerHTML=th;
+  // TRANS
+  const t=filt('SP_TRANS',wk);
+  document.getElementById('b-trans').innerHTML=t.length?t.map(r=>`<div class=spitem><div class=sptype>${r.type}</div><div class=spvessel>${r.vessel}</div><div class=spdetail>${r.detail}</div></div>`).join(''):'<div class=nodata>No transactions</div>';
 }
 
-function renderTrans(items){
-  const el=document.getElementById('list-sp-trans');
-  if(!items.length){el.innerHTML='<div class="no-data">No transactions</div>';return;}
-  el.innerHTML=items.map(t=>`<div class="sp-item"><div class="sp-type">${t.type||''}</div><div class="sp-vessel">${t.vessel||''}</div><div class="sp-detail">${t.detail||''}</div></div>`).join('');
+function renderCtArch(){
+  const rows=(DB.CHARTROOM||[]).slice().sort((a,b)=>String(b.week_date).localeCompare(String(a.week_date)));
+  document.getElementById('ct-arch').innerHTML=rows.length?rows.map(r=>{
+    const prev=(r.body||'').replace(/<[^>]*>/g,'').substring(0,120)+'…';
+    return `<div class=ctitem onclick="ctShow('${r.week_date}')"><div class=ctdate>${fmt(r.week_date)}</div><div><div class=cttl>${r.title}</div><div style="font-size:12px;color:var(--muted);margin-top:2px">${prev}</div></div></div>`;
+  }).join(''):'<div class=nodata>No entries</div>';
 }
-
-/* CHARTROOM */
-function renderCtArchive(){
-  const el=document.getElementById('ct-archive-list');
-  const weeks=Object.keys(allWeeks).filter(w=>allWeeks[w].chartroom_title).sort().reverse();
-  if(!weeks.length){el.innerHTML='<div class="no-data">No entries yet. Import a PDF to get started.</div>';return;}
-  el.innerHTML=weeks.map(w=>{
-    const d=allWeeks[w];
-    const prev=(d.chartroom_body||'').replace(/<[^>]*>/g,'').substring(0,120)+'…';
-    return`<div class="ct-archive-item" onclick="showCtArticle('${w}')"><div class="ct-date">${fmtDate(w)}</div><div><div class="ct-item-title">${d.chartroom_title}</div><div class="ct-item-preview">${prev}</div></div></div>`;
-  }).join('');
+function ctShow(wk){
+  const r=(DB.CHARTROOM||[]).find(x=>String(x.week_date)===String(wk));
+  if(!r)return;
+  document.getElementById('ct-t').textContent=r.title;
+  document.getElementById('ct-m').textContent=fmt(wk)+' — SSY Projects Vector Chartroom';
+  document.getElementById('ct-b').innerHTML=r.body;
+  document.getElementById('ct-list').style.display='none';
+  document.getElementById('ct-art').style.display='block';
 }
-
-function showCtArticle(wk){
-  const d=allWeeks[wk];
-  document.getElementById('ct-art-title').textContent=d.chartroom_title||'Untitled';
-  document.getElementById('ct-art-meta').textContent=fmtDate(wk)+' — SSY Projects Vector Chartroom';
-  document.getElementById('ct-art-body').innerHTML=d.chartroom_body||'';
-  document.getElementById('ct-list-view').style.display='none';
-  document.getElementById('ct-article-view').style.display='block';
-}
-
-function showCtList(){
-  document.getElementById('ct-list-view').style.display='block';
-  document.getElementById('ct-article-view').style.display='none';
-}
-
-/* PDF IMPORT */
-function setupDragDrop(){
-  const z=document.getElementById('upload-zone');
-  z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('dragover');});
-  z.addEventListener('dragleave',()=>z.classList.remove('dragover'));
-  z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('dragover');const f=e.dataTransfer.files[0];if(f&&f.type==='application/pdf')handlePdf(f);});
-}
-
-async function handlePdf(file){
-  if(!file)return;
-  setStatus('','📄 PDFを読み込み中…');
-  setProgress(20);
-  const base64=await toBase64(file);
-  setStatus('','🤖 Claudeがデータを抽出中… (10〜30秒)');
-  setProgress(50);
-  try{
-    const data=await extractWithClaude(base64);
-    setProgress(90);
-    extractedData=data;
-    showPreview(data);
-    setProgress(100);
-    setStatus('','✅ 抽出完了！内容を確認して保存してください。');
-  }catch(e){
-    setStatus('error','❌ 抽出失敗: '+e.message);
-    console.error(e);
-  }
-}
-
-function toBase64(file){
-  return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=()=>rej(new Error('Read failed'));r.readAsDataURL(file);});
-}
-
-async function extractWithClaude(base64){
-  const prompt=`Extract ALL structured data from this SSY Projects Vector Weekly Report PDF and return ONLY valid JSON with no markdown fences or explanation.
-
-Required JSON structure:
-{
-  "week_date": "YYYY-MM-DD",
-  "chartroom_title": "string — title of the Chartroom article (e.g. Picks and Shovels)",
-  "chartroom_body": "string — full article as HTML: use <h3> for section headings, <p> for paragraphs, <blockquote> for pull-quotes",
-  "ffa": [{"period":"Jun 26","handy":16300,"handy_dir":"e_up","smx":18800,"smx_dir":"e_up","pmx":20800,"pmx_dir":"e_dn","cape":35125,"cape_dir":"e_dn"}],
-  "period": [{"vessel":"HDY: 38-40K DWT","duration":"1 Year","jun26":15250,"jun26_dir":"e_up","y27":null,"y27_dir":null,"y28":null,"y28_dir":null,"y29":null,"y29_dir":null}],
-  "sp": [{"type":"HDY 38","newbuild":34.50,"nb_dir":"e_flat","resale":36.50,"rs_dir":"e_flat","fiveyo":30.00,"fiveyo_dir":"e_flat","tenyo":22.25,"tenyo_dir":"e_flat"}],
-  "demo": [{"country":"Bangladesh","dry":475,"dry_dir":"e_flat","tanker":475,"tanker_dir":"e_flat","container":500,"cont_dir":"e_flat"}],
-  "baltic": [{"bhsi38":16195,"bhsi38_dir":"e_up","bsi63":20756,"bsi63_dir":"e_up","bpi82":20545,"bpi82_dir":"e_up","bci182":37251,"bci182_dir":"e_dn"}],
-  "sp_trans": [{"type":"Handy","vessel":"MARINA R (38k dwt 2010 Jiangsu Eastern)","detail":"Reported sold at USD 10.8 mill basis TC attached until latest Q2 2027"}],
-  "nb": [{"type":"Newcastlemax","size":"208K DWT","china":"76.5-79","china_dir":"e_up","korea":null,"korea_dir":null,"japan":"86-88","japan_dir":"e_flat","delivery":"1H 2030"}],
-  "tanker": [{"category":"Crude","type":"VLCC","y1_ecoscrub":110000,"y1_eco":107000,"y1_noneco":104000,"y1_dir":"e_dn","y3_ecoscrub":70000,"y3_eco":67000,"y3_noneco":62000,"y3_dir":"e_up"}]
-}
-
-Direction codes: "e_up" = up arrow, "e_dn" = down arrow, "e_flat" = flat/unchanged.
-Include ALL rows: period rates for HDY/UMX/KMX/CAPE/NCM x 1Y/2Y/3Y/5Y/7Y; all NB types; all tanker types.
-Return ONLY the JSON object.`;
-
-  const resp=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-6',
-      max_tokens:4096,
-      messages:[{role:'user',content:[
-        {type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}},
-        {type:'text',text:prompt}
-      ]}]
-    })
-  });
-  const j=await resp.json();
-  if(j.error)throw new Error(j.error.message);
-  const raw=j.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim();
-  const parsed=JSON.parse(raw);
-  // Normalise direction codes
-  function normDir(d){
-    if(!d)return'è';
-    if(d==='e_up')return'é';
-    if(d==='e_dn')return'ê';
-    if(d==='e_flat')return'è';
-    return d;
-  }
-  function normRows(arr,fields){return(arr||[]).map(r=>{const o={...r};fields.forEach(f=>{if(o[f])o[f]=normDir(o[f]);});return o;});}
-  parsed.ffa=normRows(parsed.ffa,['handy_dir','smx_dir','pmx_dir','cape_dir']);
-  parsed.period=normRows(parsed.period,['jun26_dir','y27_dir','y28_dir','y29_dir']);
-  parsed.sp=normRows(parsed.sp,['nb_dir','rs_dir','fiveyo_dir','tenyo_dir']);
-  parsed.demo=normRows(parsed.demo,['dry_dir','tanker_dir','cont_dir']);
-  parsed.baltic=normRows(parsed.baltic,['bhsi38_dir','bsi63_dir','bpi82_dir','bci182_dir']);
-  parsed.nb=normRows(parsed.nb,['china_dir','korea_dir','japan_dir']);
-  parsed.tanker=normRows(parsed.tanker,['y1_dir','y3_dir']);
-  return parsed;
-}
-
-function showPreview(d){
-  const s=document.getElementById('preview-sections');
-  const ps=(arr,label)=>{
-    if(!arr||!arr.length)return'';
-    return`<div class="preview-section"><h4>${label} (${arr.length} rows)</h4><pre>${JSON.stringify(arr.slice(0,3),null,2)}${arr.length>3?'\n…':''}`;+'</pre></div>';
-  };
-  s.innerHTML=`
-    <div class="preview-section"><h4>📅 Week Date</h4><pre>${d.week_date}</pre></div>
-    <div class="preview-section"><h4>📰 Chartroom Title</h4><pre>${d.chartroom_title||'—'}</pre></div>
-    ${ps(d.ffa,'📊 FFA Curves')}
-    ${ps(d.period,'🚢 Period Rates')}
-    ${ps(d.sp,'💰 S&P Pricing')}
-    ${ps(d.demo,'🏗 Demolition')}
-    <div class="preview-section"><h4>📈 Baltic Index</h4><pre>${JSON.stringify(d.baltic,null,2)}</pre></div>
-    ${ps(d.sp_trans,'🔖 Transactions')}
-    ${ps(d.nb,'🏭 Newbuildings')}
-    ${ps(d.tanker,'🛢 Tanker Rates')}
-  `;
-  document.getElementById('preview-area').style.display='block';
-}
-
-async function confirmSave(){
-  if(!extractedData)return;
-  const btn=document.getElementById('btn-confirm');
-  btn.disabled=true;btn.textContent='保存中…';
-  const entry={...extractedData,id:extractedData.week_date};
-  try{
-    const r=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'add',entry,password:PW})});
-    const j=await r.json();
-    if(j.success){
-      allWeeks[entry.week_date]=entry;
-      populateWeekSelect();
-      document.getElementById('pdf-ok').style.display='inline';
-      setTimeout(()=>{
-        resetUpload();
-        loadWeek(entry.week_date);
-        showTab('view',document.querySelectorAll('.tab-btn')[0]);
-      },2000);
-    }else{document.getElementById('pdf-err').style.display='inline';}
-  }catch(ex){console.error(ex);document.getElementById('pdf-err').style.display='inline';}
-  btn.disabled=false;btn.textContent='✓ Spreadsheet に保存';
-}
-
-function resetUpload(){
-  document.getElementById('pdf-file').value='';
-  document.getElementById('preview-area').style.display='none';
-  document.getElementById('ext-status').style.display='none';
-  document.getElementById('prog-bar').style.display='none';
-  document.getElementById('prog-fill').style.width='0%';
-  document.getElementById('pdf-ok').style.display='none';
-  document.getElementById('pdf-err').style.display='none';
-  extractedData=null;
-}
-
-function setStatus(type,msg){
-  const el=document.getElementById('ext-status');
-  el.textContent=msg;el.style.display='block';
-  el.className='extract-status'+(type==='error'?' error':'');
-}
-
-function setProgress(pct){
-  document.getElementById('prog-bar').style.display='block';
-  document.getElementById('prog-fill').style.width=pct+'%';
-}
-
-/* MANUAL SUBMIT */
-async function submitManual(){
-  const week_date=document.getElementById('f-date').value;
-  if(!week_date){alert('Week dateを選択してください');return;}
-  const spRaw=document.getElementById('f-sp-trans').value;
-  const sp_trans=spRaw?spRaw.split('\n').filter(l=>l.trim()).map(l=>{const p=l.split('|').map(s=>s.trim());return{type:p[0]||'',vessel:p[1]||'',detail:p[2]||''};}):[];
-  const entry={id:week_date,week_date,ffa:[],period:[],sp:[],demo:[],baltic:[],nb:[],tanker:[],sp_trans,chartroom_title:document.getElementById('f-ct-title').value,chartroom_body:document.getElementById('f-ct-body').value};
-  try{
-    const r=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'add',entry,password:PW})});
-    const j=await r.json();
-    if(j.success){allWeeks[week_date]=entry;populateWeekSelect();document.getElementById('man-ok').style.display='inline';setTimeout(()=>document.getElementById('man-ok').style.display='none',3000);}
-    else document.getElementById('man-err').style.display='inline';
-  }catch(ex){document.getElementById('man-err').style.display='inline';}
-}
-
-/* ARCHIVE */
-function renderArchive(){
-  const el=document.getElementById('archive-list');
-  const weeks=Object.keys(allWeeks).sort().reverse();
-  if(!weeks.length){el.innerHTML='<div class="no-data">No data yet.</div>';return;}
-  el.innerHTML=weeks.map(w=>`<div style="display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:12px">
-    <div style="min-width:130px;font-weight:700;color:var(--navy)">${fmtDate(w)}</div>
-    <div style="flex:1;font-size:12px;color:var(--muted)">${allWeeks[w].chartroom_title||''}</div>
-    <button class="btn-save" style="padding:5px 14px;font-size:12px" onclick="goWeek('${w}')">View</button>
-  </div>`).join('');
-}
-
-function goWeek(wk){
-  document.getElementById('week-select').value=wk;loadWeek(wk);
-  showTab('view',document.querySelectorAll('.tab-btn')[0]);
-  window.scrollTo(0,0);
-}
+function ctList(){document.getElementById('ct-list').style.display='block';document.getElementById('ct-art').style.display='none';}
 </script>
 </body>
 </html>
